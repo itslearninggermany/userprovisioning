@@ -65,17 +65,21 @@ func Person(institution, syncID, username, givenname, familyname, birthday, emai
 	a.Adr.Locality = locality
 	a.Adr.Pcode = pcode
 	a.Institutionrole.Primaryrole = "Yes"
-	if kindOfPersonStudentOrStaffOrParent == "Staff" {
-		a.Institutionrole.Institutionroletype = "Staff"
-	} else if kindOfPersonStudentOrStaffOrParent == "Student" {
-		a.Institutionrole.Institutionroletype = "Student"
-	} else if kindOfPersonStudentOrStaffOrParent == "Parent" {
-		a.Institutionrole.Institutionroletype = "Carer"
-	} else if kindOfPersonStudentOrStaffOrParent == "Schulbegleiter" {
-		a.Institutionrole.Institutionroletype = kindOfPersonStudentOrStaffOrParent
-	} else {
-		a.Institutionrole.Institutionroletype = "Guest"
-	}
+
+	a.Institutionrole.Institutionroletype = kindOfPersonStudentOrStaffOrParent
+	/*
+		if kindOfPersonStudentOrStaffOrParent == "Staff" {
+			a.Institutionrole.Institutionroletype = "Staff"
+		} else if kindOfPersonStudentOrStaffOrParent == "Student" {
+			a.Institutionrole.Institutionroletype = "Student"
+		} else if kindOfPersonStudentOrStaffOrParent == "Parent" {
+			a.Institutionrole.Institutionroletype = "Carer"
+		} else if kindOfPersonStudentOrStaffOrParent == "Schulbegleiter" {
+			a.Institutionrole.Institutionroletype = kindOfPersonStudentOrStaffOrParent
+		} else {
+			a.Institutionrole.Institutionroletype = "Guest"
+		}
+	*/
 	a.Extension.Relationship = relation
 	return *a
 }
