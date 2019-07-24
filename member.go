@@ -17,19 +17,23 @@ type member struct {
 	} `xml:"sourcedid"`
 	Idtype string `xml:"idtype"` // always 1
 	Role   struct {
-		Recstatus string `xml:"recstatus,attr"` // always 1
+		Recstatus string `xml:"recstatus,attr"` // always 1   // When Mentor then 6
 		Roletype  string `xml:"roletype,attr"`  // 01 Student; 02 Staff; 04 Guest
 		Subrole   string `xml:"subrole"`        // Student, Staff, Guest
 		Status    string `xml:"status"`         // always 1
 	} `xml:"role"`
 }
 
-func Member(institution string, personID string, role string) member {
+func Member(institution string, personID string, role string, mentor bool) member {
 	a := new(member)
 	a.Sourcedid.Source = institution
 	a.Sourcedid.ID = personID
 	a.Idtype = "1"
-	a.Role.Recstatus = "1"
+	if mentor {
+		a.Role.Recstatus = "6"
+	} else {
+		a.Role.Recstatus = "1"
+	}
 	var rolenumber string
 	if role == "Student" {
 		rolenumber = "01"
