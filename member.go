@@ -29,11 +29,8 @@ func Member(institution string, personID string, role string, mentor bool) membe
 	a.Sourcedid.Source = institution
 	a.Sourcedid.ID = personID
 	a.Idtype = "1"
-	if mentor {
-		a.Role.Recstatus = "6"
-	} else {
-		a.Role.Recstatus = "1"
-	}
+	a.Role.Recstatus = "1"
+
 	var rolenumber string
 	if role == "Student" {
 		rolenumber = "01"
@@ -45,6 +42,9 @@ func Member(institution string, personID string, role string, mentor bool) membe
 	a.Role.Roletype = rolenumber
 	a.Role.Subrole = role
 	a.Role.Status = "1"
+	if mentor {
+		a.Role.Roletype = "06"
+	}
 	return *a
 }
 
