@@ -6,12 +6,11 @@ package userprovisioning
 // Function of the file: the Child-Struc for Parents/Child Relation
 
 type childParent struct {
-	Relationshiptype string `xml:"relationshiptyp"`
+	Relationshiptype string `xml:"relationshiptype"`
 	Sourcedid        struct {
 		Source string `xml:"source"`
 		ID     string `xml:"id"`
 	} `xml:"sourcedid"`
-	Label string `xml:"label"`
 }
 
 // Creates a new Child.
@@ -24,7 +23,6 @@ func Child(institution, childOrParentID string, parent bool) *childParent {
 	}
 	a.Sourcedid.Source = institution
 	a.Sourcedid.ID = childOrParentID
-	a.Label = "child"
 	return a
 }
 
