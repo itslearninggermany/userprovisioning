@@ -44,12 +44,12 @@ type person struct {
 		Institutionroletype string `xml:"institutionroletype,attr"`
 	} `xml:"institutionrole"`
 	Extension struct {
-		Relationship []child `xml:"relationship"`
+		Relationship []childParent `xml:"relationship"`
 	} `xml:"extension"`
 }
 
 // Creates a new Person
-func Person(institution, syncID, username, givenname, familyname, birthday, email, street, locality, pcode, kindOfPersonStudentOrStaffOrParent string, tel []telefon, relation []child) person {
+func Person(institution, syncID, username, givenname, familyname, birthday, email, street, locality, pcode, kindOfPersonStudentOrStaffOrParent string, tel []telefon, childOrParentIds []string, parent bool) person {
 	a := new(person)
 	a.Recstatus = "1"
 	a.Sourcedid.Source = institution
@@ -67,20 +67,7 @@ func Person(institution, syncID, username, givenname, familyname, birthday, emai
 	a.Institutionrole.Primaryrole = "Yes"
 
 	a.Institutionrole.Institutionroletype = kindOfPersonStudentOrStaffOrParent
-	/*
-		if kindOfPersonStudentOrStaffOrParent == "Staff" {
-			a.Institutionrole.Institutionroletype = "Staff"
-		} else if kindOfPersonStudentOrStaffOrParent == "Student" {
-			a.Institutionrole.Institutionroletype = "Student"
-		} else if kindOfPersonStudentOrStaffOrParent == "Parent" {
-			a.Institutionrole.Institutionroletype = "Carer"
-		} else if kindOfPersonStudentOrStaffOrParent == "Schulbegleiter" {
-			a.Institutionrole.Institutionroletype = kindOfPersonStudentOrStaffOrParent
-		} else {
-			a.Institutionrole.Institutionroletype = "Guest"
-		}
-	*/
-	a.Extension.Relationship = relation
+	a.Extension.Relationship = MakeAChildSlice(institution, childOrParentIds, parent)
 	return *a
 }
 

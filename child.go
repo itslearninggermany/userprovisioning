@@ -5,8 +5,9 @@ package userprovisioning
 // Function of the package: Userprovisioning for IMS-E
 // Function of the file: the Child-Struc for Parents/Child Relation
 
-type child struct {
-	Sourcedid struct {
+type childParent struct {
+	Relationshiptype string `xml:"relationshiptyp"`
+	Sourcedid        struct {
 		Source string `xml:"source"`
 		ID     string `xml:"id"`
 	} `xml:"sourcedid"`
@@ -14,23 +15,33 @@ type child struct {
 }
 
 // Creates a new Child.
-func Child(institution, childID string) *child {
-	a := new(child)
+func Child(institution, childOrParentID string, parent bool) *childParent {
+	a := new(childParent)
+	if parent {
+		a.Relationshiptype = "parent"
+	} else {
+		a.Relationshiptype = "child"
+	}
 	a.Sourcedid.Source = institution
-	a.Sourcedid.ID = childID
+	a.Sourcedid.ID = childOrParentID
 	a.Label = "child"
 	return a
 }
 
 // GetChild gibt die Institution und die ChildID zurück
-func (a *child) GetChild() (institution, childID string) {
-	return a.Sourcedid.Source, a.Sourcedid.ID
+func (a *childParent) GetChildOrParent() (institution, childoParentID string, parent bool) {
+	if a.Relationshiptype == "parent" {
+		parent = true
+	} else {
+		parent = false
+	}
+	return a.Sourcedid.Source, a.Sourcedid.ID, parent
 }
 
 // MakeAChildSlice erstellt ein Array mit Childs.
-func MakeAChildSlice(institution string, childIDs []string) (res []child) {
-	for i := 0; i < len(childIDs); i++ {
-		a := Child(institution, childIDs[i])
+func MakeAChildSlice(institution string, childParentIDs []string, parent bool) (res []childParent) {
+	for i := 0; i < len(childParentIDs); i++ {
+		a := Child(institution, childParentIDs[0], parent)
 		res = append(res, *a)
 	}
 	return
