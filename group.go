@@ -16,6 +16,7 @@ type group struct {
 		Scheme    string `xml:"scheme"` // always igslengede
 		Typevalue struct {
 			Level string `xml:"level,attr"` // Level 0: Root; level 1: School; Level 2: Groups
+			Value string `xml:",chardata"`
 		} `xml:"typevalue"`
 	} `xml:"grouptype"`
 	Description struct {
@@ -31,12 +32,13 @@ type group struct {
 	} `xml:"relationship"`
 }
 
-func Group(institution string, groupname string, groupID int, level int, parentgroupID int, parentlevel int) *group {
+func Group(institution string, scheme string, grouptypevalue string, groupname string, groupID int, level int, parentgroupID int, parentlevel int) *group {
 	a := new(group)
 	a.Sourcedid.ID = strconv.Itoa(groupID)
 	a.Sourcedid.Source = institution
-	a.Grouptype.Scheme = institution
+	a.Grouptype.Scheme = scheme
 	a.Grouptype.Typevalue.Level = strconv.Itoa(level)
+	a.Grouptype.Typevalue.Value = grouptypevalue
 	a.Description.Short = groupname
 	a.Relationship.Relation = "1"
 	a.Relationship.Sourcedid.Source = institution
